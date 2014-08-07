@@ -19,6 +19,6 @@ public class ProductControllerTests {
 
         ctrl.list(uiModel);
 
-        verify(repo, times(1)).getAllProducts();
+        verify(repo).getAllProducts();
     }
 }

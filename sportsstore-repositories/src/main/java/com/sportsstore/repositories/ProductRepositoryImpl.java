@@ -1,16 +1,18 @@
 package com.sportsstore.repositories;
 
 import com.sportsstore.models.Product;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+
 import static java.util.Arrays.*;
 
+@Repository
 public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> getAllProducts() {
-
         return asList(
                 product("Football", 25),
                 product("Surf board", 179),
