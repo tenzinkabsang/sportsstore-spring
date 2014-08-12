@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sportsstore-repositories</artifactId>
+    <artifactId>sportsstore-data-contracts</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
@@ -18,12 +18,6 @@
             <groupId>com.sportsstore</groupId>
             <artifactId>sportsstore-models</artifactId>
             <version>${sportsstore-models.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 

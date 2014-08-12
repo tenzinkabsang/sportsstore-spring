@@ -24,8 +24,14 @@
 
         <dependency>
             <groupId>com.sportsstore</groupId>
-            <artifactId>sportsstore-repositories</artifactId>
-            <version>${sportsstore-repositories.version}</version>
+            <artifactId>sportsstore-data-contracts</artifactId>
+            <version>${sportsstore-data-contracts.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sportsstore</groupId>
+            <artifactId>sportsstore-data-mysql</artifactId>
+            <version>${sportsstore-data-mysql.version}</version>
         </dependency>
 
         <dependency>

@@ -1,6 +1,6 @@
 package com.sportsstore.web.controllers;
 
-import com.sportsstore.repositories.ProductRepository;
+import com.sportsstore.data.contracts.ProductRepository;
 import org.junit.Test;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -17,8 +17,8 @@ public class ProductControllerTests {
 
         ProductController ctrl = new ProductController(repo);
 
-        ctrl.list(uiModel);
+        ctrl.list(uiModel, 1);
 
-        verify(repo).getAllProducts();
+        verify(repo).getAllProducts(anyInt(), anyInt());
     }
 }

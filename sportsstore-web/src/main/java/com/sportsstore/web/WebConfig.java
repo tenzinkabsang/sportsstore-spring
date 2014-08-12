@@ -1,7 +1,6 @@
 package com.sportsstore.web;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -9,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
 
 @Configuration
 @EnableWebMvc
@@ -19,7 +19,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry){
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
-        System.out.println("-- resource handlers --");
     }
 
     @Bean
@@ -28,9 +27,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
         viewResolver.setViewClass(JstlView.class);
-
-        System.out.println("-- view resolvers --");
-
         return viewResolver;
     }
+
+
 }

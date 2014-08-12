@@ -11,14 +11,16 @@
 
     <modules>
         <module>sportsstore-models</module>
-        <module>sportsstore-repositories</module>
         <module>sportsstore-web</module>
+        <module>sportsstore-data-contracts</module>
+        <module>sportsstore-data-mysql</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
         <sportsstore-models.version>1.0.0-SNAPSHOT</sportsstore-models.version>
-        <sportsstore-repositories.version>1.0.0-SNAPSHOT</sportsstore-repositories.version>
+        <sportsstore-data-contracts.version>1.0.0-SNAPSHOT</sportsstore-data-contracts.version>
+        <sportsstore-data-mysql.version>1.0.0-SNAPSHOT</sportsstore-data-mysql.version>
 
         <spring.version>4.0.6.RELEASE</spring.version>
         <junit.version>4.8.2</junit.version>
@@ -33,6 +35,9 @@
         <servlet-api.version>2.5</servlet-api.version>
         <jsp-api.version>2.1</jsp-api.version>
         <jstl.version>1.2</jstl.version>
+
+        <!-- sportsstore-repositories -->
+        <mysql.version>5.1.31</mysql.version>
     </properties>
 
 
