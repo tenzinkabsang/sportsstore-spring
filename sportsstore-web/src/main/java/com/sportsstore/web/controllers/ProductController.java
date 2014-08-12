@@ -2,13 +2,13 @@ package com.sportsstore.web.controllers;
 
 import com.sportsstore.data.contracts.ProductRepository;
 import com.sportsstore.models.Product;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -19,6 +19,7 @@ public class ProductController {
 
     private final int pageSize = 4;
 
+    @Qualifier("mysql")
     private ProductRepository productRepo;
 
     @Inject

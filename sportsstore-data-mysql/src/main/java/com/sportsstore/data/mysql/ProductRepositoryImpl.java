@@ -2,7 +2,6 @@ package com.sportsstore.data.mysql;
 
 import com.sportsstore.data.contracts.ProductRepository;
 import com.sportsstore.models.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
