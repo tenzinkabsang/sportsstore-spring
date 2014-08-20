@@ -29,6 +29,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setViewClass(JstlView.class);
         return viewResolver;
     }
-
-
 }

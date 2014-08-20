@@ -17,8 +17,8 @@ public class ProductControllerTests {
 
         ProductController ctrl = new ProductController(repo);
 
-        ctrl.list(uiModel, 1);
+        ctrl.list(uiModel, null, 1);
 
-        verify(repo).getAllProducts(anyInt(), anyInt());
+        verify(repo).getProducts(anyInt(), null, anyInt());
     }
 }

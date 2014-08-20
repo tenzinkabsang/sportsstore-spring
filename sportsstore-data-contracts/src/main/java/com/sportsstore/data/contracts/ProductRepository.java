@@ -2,8 +2,13 @@ package com.sportsstore.data.contracts;
 
 import com.sportsstore.models.Product;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ProductRepository {
-    List<Product> getAllProducts(int page, int itemsPerPage);
+    List<Product> getProducts(int page, String category, int itemsPerPage);
+
+    int getProductCountFor(String category);
+
+    List<String> getAllCategories();
 }

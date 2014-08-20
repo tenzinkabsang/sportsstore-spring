@@ -24,13 +24,25 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts(int page, int itemsPerPage) {
+    public List<Product> getProducts(int page, String category, int itemsPerPage) {
 
-        final String query = "select * from products order by productId limit :page, :itemsPerPage";
+        String query;
+        SqlParameterSource params;
+        if(category == null || category == ""){
+            query = "select * from products order by productId limit :page, :itemsPerPage";
+            params = new MapSqlParameterSource()
+                    .addValue("page", ((page - 1) * itemsPerPage))
+                    .addValue("itemsPerPage", itemsPerPage);
 
-        SqlParameterSource params = new MapSqlParameterSource()
-                .addValue("page", ((page - 1) * itemsPerPage))
-                .addValue("itemsPerPage", itemsPerPage);
+        } else {
+            query = "select * from products where category = :category order by productId limit :page, :itemsPerPage";
+            params = new MapSqlParameterSource()
+                    .addValue("category", category)
+                    .addValue("page", ((page - 1) * itemsPerPage))
+                    .addValue("itemsPerPage", itemsPerPage);
+        }
+
+
 
         return jdbcTemplate.query(query, params, new RowMapper<Product>() {
             @Override
@@ -44,5 +56,19 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return p;
             }
         });
+    }
+
+    @Override
+    public int getProductCountFor(String category) {
+        if(category == null || category.isEmpty())
+            return jdbcTemplate.queryForObject("select count(*) from products", new MapSqlParameterSource(), Integer.class);
+
+        final String query = "select count(*) from products where category = :category";
+        return jdbcTemplate.queryForObject(query, new MapSqlParameterSource("category", category), Integer.class);
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        return jdbcTemplate.queryForList("select distinct category from products order by category", new MapSqlParameterSource(), String.class);
     }
 }

@@ -47,8 +47,15 @@
         </div>
     </div>
 
-    <div class="container">
-        <decorator:body />
+    <div>
+
+        <div class="col-sm-3 col-md-2 sidebar">
+            <%@include file="menu.jsp"%>
+        </div>
+
+        <div class="col-sm-9 main">
+            <decorator:body />
+        </div>
     </div>
 
 </div>

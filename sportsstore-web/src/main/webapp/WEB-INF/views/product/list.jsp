@@ -4,13 +4,17 @@
 <title>Products</title>
 
 <div>
-    <c:forEach var="p" items="${productList}">
-        <div>
-            <h2>${p.name}</h2>
-            ${p.description}
-            <h4>
-                <fmt:formatNumber value="${p.price}" type="Currency" />
-            </h4>
-        </div>
+    <c:forEach var="p" items="${viewModel.products}">
+        <%@include file="productSummary.jsp"%>
     </c:forEach>
+</div>
+
+<div>
+    <ul class="pagination">
+        <c:forEach begin="1" end="${viewModel.pagingInfo.totalPages}" varStatus="counter">
+            <li class="${viewModel.pagingInfo.getCssClass(counter.index)}">
+                <a href="${viewModel.currentCategory}/page${counter.index}">${counter.index}</a>
+            </li>
+        </c:forEach>
+    </ul>
 </div>
