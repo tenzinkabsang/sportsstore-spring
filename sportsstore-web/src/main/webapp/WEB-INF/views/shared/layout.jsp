@@ -54,6 +54,12 @@
         </div>
 
         <div class="col-sm-9 main">
+            <c:if test="${not empty message}">
+                <div class="alert alert-success" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+
             <decorator:body />
         </div>
     </div>

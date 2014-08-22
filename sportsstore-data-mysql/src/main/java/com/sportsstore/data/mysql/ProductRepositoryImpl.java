@@ -71,4 +71,21 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<String> getAllCategories() {
         return jdbcTemplate.queryForList("select distinct category from products order by category", new MapSqlParameterSource(), String.class);
     }
+
+    @Override
+    public Product getProductById(int productId) {
+        return jdbcTemplate.queryForObject("select * from products where productId = :id", new MapSqlParameterSource("id", productId),
+                new RowMapper<Product>() {
+                    @Override
+                    public Product mapRow(ResultSet rs, int i) throws SQLException {
+                        Product p = new Product();
+                        p.setProductId(rs.getInt("productId"));
+                        p.setName(rs.getString("name"));
+                        p.setDescription(rs.getString("description"));
+                        p.setCategory(rs.getString("category"));
+                        p.setPrice(rs.getBigDecimal("price"));
+                        return p;
+                    }
+                });
+    }
 }

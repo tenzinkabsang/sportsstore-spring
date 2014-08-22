@@ -11,4 +11,6 @@ public interface ProductRepository {
     int getProductCountFor(String category);
 
     List<String> getAllCategories();
+
+    Product getProductById(int productId);
 }
