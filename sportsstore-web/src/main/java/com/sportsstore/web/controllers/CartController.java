@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
@@ -18,9 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+
+/**
+ * The controller will be instantiated for each request and injected with a cart object that is scoped to "session.
+ */
 @Controller
+@Scope("request")
 @RequestMapping("cart")
-@SessionAttributes("mycart")
 public class CartController {
 
     @Inject
@@ -34,45 +37,35 @@ public class CartController {
     }
 
     @RequestMapping(value = "index", method = GET)
-    public String index(HttpServletRequest request, Model model, @RequestParam String returnUrl){
-        CartIndexViewModel cartModel = new CartIndexViewModel(getCart(request), returnUrl);
+    public String index(Model model, @RequestParam String returnUrl){
+        CartIndexViewModel cartModel = new CartIndexViewModel(cart, returnUrl);
         model.addAttribute("cartModel", cartModel);
         return "cart/index";
     }
 
     @RequestMapping(value = "addToCart", method = POST)
-    public String addToCart(HttpServletRequest request, RedirectAttributes redirectAttr, @RequestParam int productId, @RequestParam String returnUrl){
+    public String addToCart(RedirectAttributes redirectAttr, @RequestParam int productId, @RequestParam String returnUrl){
         Product product = repository.getProductById(productId);
 
         if(product != null){
-            getCart(request).addItem(product, 1);
+            cart.addItem(product, 1);
         }
 
         redirectAttr.addAttribute("returnUrl", returnUrl)
                     .addFlashAttribute("message", "Item added to cart!");
 
-        return "redirect:index/{returnUrl}";
+        return "redirect:index";
     }
 
 
     @RequestMapping(value = "removeFromCart", method = POST)
-    public String removeFromCart(HttpServletRequest request, @RequestParam int productId, @RequestParam String returnUrl){
+    public String removeFromCart(@RequestParam int productId, @RequestParam String returnUrl){
         Product product = repository.getProductById(productId);
 
         if(product != null){
-            getCart(request).removeLine(product);
+            cart.removeLine(product);
         }
 
         return "redirect:" + returnUrl;
-    }
-
-
-    private Cart getCart(HttpServletRequest request){
-        Cart cart = (Cart)request.getSession().getAttribute("cart");
-        if(cart == null){
-            cart = new Cart();
-            request.getSession().setAttribute("cart", cart);
-        }
-        return cart;
     }
 }

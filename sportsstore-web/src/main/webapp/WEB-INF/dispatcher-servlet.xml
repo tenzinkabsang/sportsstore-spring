@@ -15,8 +15,11 @@
 
     <!-- css, img, js... -->
     <!--<mvc:resources mapping="/resources/**" location="/resources/" />-->
-
     <mvc:interceptors>
-        <bean class="com.sportsstore.web.controllers.ControllerInterceptor"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/resources/**" />
+            <bean class="com.sportsstore.web.controllers.ControllerInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 </beans>

@@ -2,6 +2,7 @@ package com.sportsstore.models;
 
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@Scope(value = "session")
 public class Cart {
     private final List<CartLine> lineCollection = new ArrayList<CartLine>();
 

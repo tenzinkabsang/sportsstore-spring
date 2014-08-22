@@ -69,6 +69,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<String> getAllCategories() {
+        System.out.println("Getting all categories");
         return jdbcTemplate.queryForList("select distinct category from products order by category", new MapSqlParameterSource(), String.class);
     }
 

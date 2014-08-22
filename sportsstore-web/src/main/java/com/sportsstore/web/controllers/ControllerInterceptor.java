@@ -17,19 +17,17 @@ import java.util.Map;
 
 public class ControllerInterceptor extends HandlerInterceptorAdapter{
 
+    @Inject
     @Qualifier("mysql")
     private ProductRepository productRepo;
-
-    @Inject
-    public ControllerInterceptor(ProductRepository productRepo){
-        this.productRepo = productRepo;
-    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
         try{
+            //if(!isAjax(request) && !request.getRequestURL().toString().contains("/resources/")){
             if(!isAjax(request)){
 
+                System.out.println(request.getRequestURL());
                 String selectedCategory = null;
                 Map<String,String> target = (Map<String, String>)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
