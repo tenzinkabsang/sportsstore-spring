@@ -5,3 +5,4 @@ output/*
 *.class
 *.jar
 *.war
+bower_components

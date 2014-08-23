@@ -22,13 +22,9 @@ public class ProductController {
 
     private final int pageSize = 4;
 
+    @Inject
     @Qualifier("mysql")
     private ProductRepository productRepo;
-
-    @Inject
-    public ProductController(ProductRepository productRepo){
-        this.productRepo = productRepo;
-    }
 
     @RequestMapping(method = GET)
     public String list(Model model, @RequestParam(required = false) String category, @RequestParam(defaultValue = "1") int page){

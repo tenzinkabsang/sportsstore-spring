@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-
 /**
  * The controller will be instantiated for each request and injected with a cart object that is scoped to "session.
  */
@@ -26,14 +24,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("cart")
 public class CartController {
 
-    @Inject
-    private Cart cart;
+    private final Cart cart;
 
     private final ProductRepository repository;
 
     @Inject
-    public CartController(ProductRepository repository){
+    public CartController(ProductRepository repository, Cart cart){
         this.repository = repository;
+        this.cart = cart;
     }
 
     @RequestMapping(value = "index", method = GET)
@@ -59,13 +57,15 @@ public class CartController {
 
 
     @RequestMapping(value = "removeFromCart", method = POST)
-    public String removeFromCart(@RequestParam int productId, @RequestParam String returnUrl){
+    public String removeFromCart(RedirectAttributes redirectAttr, @RequestParam int productId, @RequestParam String returnUrl){
         Product product = repository.getProductById(productId);
 
         if(product != null){
             cart.removeLine(product);
         }
+        redirectAttr.addAttribute("returnUrl", returnUrl)
+                .addFlashAttribute("message", "Item removed from cart");
 
-        return "redirect:" + returnUrl;
+        return "redirect:index";
     }
 }

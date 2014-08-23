@@ -60,5 +60,8 @@ public class Cart {
         return Collections.unmodifiableList(lineCollection);
     }
 
+    public int getTotalItems(){
+        return lineCollection.size();
+    }
 }
 

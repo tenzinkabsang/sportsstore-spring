@@ -2,6 +2,7 @@ package com.sportsstore.web.controllers;
 
 
 import com.sportsstore.data.contracts.ProductRepository;
+import com.sportsstore.models.Cart;
 import com.sportsstore.models.CategoryViewModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.HandlerMapping;
@@ -20,11 +21,15 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter{
     @Inject
     @Qualifier("mysql")
     private ProductRepository productRepo;
+/*
+
+    @Inject
+    private Cart cart;
+*/
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
         try{
-            //if(!isAjax(request) && !request.getRequestURL().toString().contains("/resources/")){
             if(!isAjax(request)){
 
                 System.out.println(request.getRequestURL());
@@ -39,6 +44,9 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter{
 
                 List<String> categories = productRepo.getAllCategories();
                 modelAndView.addObject("categoryModel", new CategoryViewModel(selectedCategory, categories));
+
+                Cart cart = (Cart)request.getSession().getAttribute("cart");
+                modelAndView.addObject("cart", cart);
             }
 
         } finally {

@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="html" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <title>Sports Store: Your Cart</title>
 
@@ -25,6 +26,14 @@
             </td>
             <td>
                 <fmt:formatNumber value="${line.lineTotal}" type="Currency" />
+            </td>
+            <td>
+                <html:form method="post" action="/cart/removeFromCart">
+                    <input type="hidden" name="productId" value="${line.product.productId}" />
+                    <input type="hidden" name="returnUrl" value="<s:url value="${requestScope['javax.servlet.forward.servlet_path']}" />" />
+
+                    <input type="submit" value="Remove" class="btn btn-warning"/>
+                </html:form>
             </td>
         </tr>
     </c:forEach>

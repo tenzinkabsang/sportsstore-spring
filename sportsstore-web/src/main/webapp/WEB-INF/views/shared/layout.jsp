@@ -5,7 +5,7 @@
 <!doctype html>
 <html>
 <head>
-    <title><decorator:title default="SportsStore" /></title>
+    <title><decorator:title default="SportsStore"/></title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">--%>
@@ -13,8 +13,14 @@
     <link rel="stylesheet" href="<s:url value="/resources/css/bootstrap.css" />">
 
     <style type="text/css">
-        body { padding: 59px; }
-        .navbar { margin-bottom: 30px; }
+        body {
+            padding: 59px;
+        }
+
+        .navbar {
+            margin-bottom: 30px;
+        }
+
         .error {
             color: #ff0000;
         }
@@ -27,10 +33,11 @@
             margin: 16px;
         }
     </style>
+    <decorator:head />
 </head>
 <body>
 <div>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -38,32 +45,32 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="/">Athletic Equipment Company</a>
             </div>
             <div class="collapse navbar-collapse">
-                <form class="navbar-form navbar-right" role="form">
-                    <div class="form-group">
-                        <em><span class="text-muted"><decorator:head /></span> </em>
-                    </div>
-                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <%@include file="cart.jsp"%>
+                    </li>
+                </ul>
             </div>
-
         </div>
     </div>
 
     <div>
 
         <div class="col-sm-3 col-md-2 sidebar">
-            <%@include file="menu.jsp"%>
+            <%@include file="menu.jsp" %>
         </div>
 
         <div class="col-sm-9 main">
             <c:if test="${not empty message}">
                 <div class="alert alert-success" role="alert">
-                    ${message}
+                        ${message}
                 </div>
             </c:if>
 
-            <decorator:body />
+            <decorator:body/>
         </div>
     </div>
 

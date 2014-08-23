@@ -12,7 +12,7 @@
     <form:form method="post" action="/cart/addToCart">
         <input type="hidden" name="productId" value="${p.productId}" />
 
-        <input type="hidden" name="returnUrl" value="<s:url value="/" />" />
+        <input type="hidden" name="returnUrl" value="<s:url value="${requestScope['javax.servlet.forward.servlet_path']}" />" />
 
         <input type="submit" value="+ Add to cart" class="btn btn-default"/>
     </form:form>

@@ -6,6 +6,10 @@ import com.sportsstore.models.CartLine;
 import com.sportsstore.models.Product;
 import com.sportsstore.models.ProductListViewModel;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -18,16 +22,17 @@ import static org.mockito.Mockito.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProductControllerTests {
+    @Mock
+    private ProductRepository repo;
+    @InjectMocks
+    private ProductController ctrl = new ProductController();
 
     Model uiModel = new ExtendedModelMap();
 
     @Test
     public void list_Calls_Repository_To_Get_Products(){
-        ProductRepository repo = mock(ProductRepository.class);
-
-        ProductController ctrl = new ProductController(repo);
-
         ctrl.list(uiModel, null, 1);
 
         verify(repo).getProducts(anyInt(), anyString(), anyInt());
@@ -35,11 +40,8 @@ public class ProductControllerTests {
 
     @Test
     public void generate_category_specific_product_count(){
-        ProductRepository repo = mock(ProductRepository.class);
-        when(repo.getProductCountFor(anyString()))
-                .thenReturn(3);
+        when(repo.getProductCountFor(anyString())).thenReturn(3);
 
-        ProductController ctrl = new ProductController(repo);
         ctrl.listByCategory(uiModel, "Soccer", 1);
 
         ProductListViewModel viewModel = (ProductListViewModel)uiModel.asMap().get("viewModel");

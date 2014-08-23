@@ -17,3 +17,13 @@ public class CartIndexViewModel {
         return returnUrl;
     }
 }
+
+class CartSummaryViewModel{
+    private final Cart cart;
+
+    public CartSummaryViewModel(Cart cart){
+        this.cart = cart;
+    }
+
+
+}
