@@ -18,12 +18,3 @@ public class CartIndexViewModel {
     }
 }
 
-class CartSummaryViewModel{
-    private final Cart cart;
-
-    public CartSummaryViewModel(Cart cart){
-        this.cart = cart;
-    }
-
-
-}

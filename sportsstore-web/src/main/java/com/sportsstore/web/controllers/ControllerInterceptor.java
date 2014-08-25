@@ -21,11 +21,6 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter{
     @Inject
     @Qualifier("mysql")
     private ProductRepository productRepo;
-/*
-
-    @Inject
-    private Cart cart;
-*/
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{

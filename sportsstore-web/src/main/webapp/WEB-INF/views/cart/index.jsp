@@ -49,4 +49,5 @@
 </table>
 <p>
     <a href="${cartModel.returnUrl}" class="btn btn-default">Continue shopping</a>
+    <a href="<s:url value="checkout" />" class="btn btn-default">Checkout now</a>
 </p>

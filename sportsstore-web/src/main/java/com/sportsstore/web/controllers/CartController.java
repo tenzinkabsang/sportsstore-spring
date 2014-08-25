@@ -1,18 +1,19 @@
 package com.sportsstore.web.controllers;
 
 import com.sportsstore.data.contracts.ProductRepository;
-import com.sportsstore.models.Cart;
-import com.sportsstore.models.CartIndexViewModel;
-import com.sportsstore.models.Product;
+import com.sportsstore.models.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -25,13 +26,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class CartController {
 
     private final Cart cart;
-
     private final ProductRepository repository;
+    private final OrderProcesser orderProcesser;
 
     @Inject
-    public CartController(ProductRepository repository, Cart cart){
+    public CartController(ProductRepository repository, Cart cart, OrderProcesser orderProcesser){
         this.repository = repository;
         this.cart = cart;
+        this.orderProcesser = orderProcesser;
     }
 
     @RequestMapping(value = "index", method = GET)
@@ -68,4 +70,49 @@ public class CartController {
 
         return "redirect:index";
     }
+
+    @RequestMapping(value = "/checkout", method = GET)
+    public String checkout(Model model) {
+        model.addAttribute("shippingDetails", new ShippingDetails());
+        return "cart/checkout";
+    }
+
+    @RequestMapping(value = "/checkout", method = POST)
+    public String processCheckout(@Valid ShippingDetails shippingDetails, BindingResult bindingResult, Model model){
+        if(cart.getTotalItems() == 0)
+            bindingResult.addError(new ObjectError("", "Sorry your cart is empty!"));
+
+        if(bindingResult.hasErrors())
+            return "cart/checkout";
+
+        orderProcesser.processOrder(cart, shippingDetails);
+
+        cart.clear();
+
+        return "cart/completed";
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

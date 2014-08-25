@@ -1,6 +1,4 @@
-<%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <a href="<s:url value="/cart/index?returnUrl=${requestScope['javax.servlet.forward.servlet_path']}" />">
     <span style="text-decoration: underline">
