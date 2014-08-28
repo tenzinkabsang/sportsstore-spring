@@ -13,4 +13,6 @@ public interface ProductRepository {
     List<String> getAllCategories();
 
     Product getProductById(int productId);
+
+    List<Product> getAllProducts();
 }

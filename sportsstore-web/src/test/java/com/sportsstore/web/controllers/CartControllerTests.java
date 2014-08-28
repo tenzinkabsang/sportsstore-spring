@@ -6,43 +6,41 @@ import com.sportsstore.models.Cart;
 import com.sportsstore.models.OrderProcesser;
 import com.sportsstore.models.Product;
 import com.sportsstore.models.ShippingDetails;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-
+@Test
 public class CartControllerTests {
-    /* values instantiated before each tests */
-    Cart cart = new Cart();
-    ProductRepository repo = mock(ProductRepository.class);
-    OrderProcesser orderProcesser = mock(OrderProcesser.class);
-    Model uiModel = new ExtendedModelMap();
-    RedirectAttributes redirectAttr = new RedirectAttributesModelMap();
-    Product product = new Product();
+    Cart cart;
+    ProductRepository repo;
+    OrderProcesser orderProcesser;
+    Model uiModel;
+    RedirectAttributes redirectAttr;
+    Product product;
+    CartController ctrl;
 
-    CartController ctrl = new CartController(repo, cart, orderProcesser);
+    @BeforeMethod(alwaysRun = true)
+    public void setUp(){
+        cart = new Cart();
+        repo = mock(ProductRepository.class);
+        orderProcesser = mock(OrderProcesser.class);
+        uiModel = new ExtendedModelMap();
+        redirectAttr = new RedirectAttributesModelMap();
+        ctrl = new CartController(repo, cart, orderProcesser);
 
-    @Before
-    public void setUpTestProduct(){
+        product = new Product();
         product.setProductId(1);
         product.setName("test_name");
         product.setDescription("test_description");
@@ -50,13 +48,11 @@ public class CartControllerTests {
         product.setCategory("test_category");
     }
 
-    @Test
     public void addToCart_retrieves_product_from_repository_before_adding_to_cart(){
         ctrl.addToCart(redirectAttr, 1, "cart/returnUrl");
         verify(repo).getProductById(1);
     }
 
-    @Test
     public void addToCart_adds_item_to_cart(){
         when(repo.getProductById(anyInt())).thenReturn(product);
 
@@ -65,7 +61,6 @@ public class CartControllerTests {
         assertThat(cart.computeTotalValue(), is(BigDecimal.TEN));
     }
 
-    @Test
     public void addToCart_increments_quantity_if_product_already_in_cart(){
         when(repo.getProductById(anyInt())).thenReturn(product);
 
@@ -77,7 +72,6 @@ public class CartControllerTests {
         assertThat(cart.computeTotalValue(), is(BigDecimal.valueOf(20)));
     }
 
-    @Test
     public void removeFromCart_removes_all_product_for_the_given_Id(){
         when(repo.getProductById(1)).thenReturn(product);
 
@@ -98,7 +92,6 @@ public class CartControllerTests {
         assertThat(cart.computeTotalValue(), is(BigDecimal.ONE));
     }
 
-    @Test
     public void checkout_displays_view_for_shippingDetails(){
         String result = ctrl.checkout(uiModel);
 
@@ -109,7 +102,6 @@ public class CartControllerTests {
         assertThat(result, is("cart/checkout"));
     }
 
-    @Test
     public void processCheckout_with_binding_errors_does_not_process_order(){
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
@@ -119,16 +111,14 @@ public class CartControllerTests {
         verify(orderProcesser, never()).processOrder(any(Cart.class), any(ShippingDetails.class));
     }
 
-    @Test
     public void processCheckout_with_empty_cart_is_not_allowed(){
         BindingResult bindingResult = mock(BindingResult.class);
 
-        ctrl.processCheckout(null, bindingResult, null);
+        ctrl.processCheckout(new ShippingDetails(), bindingResult, uiModel);
 
         verify(bindingResult).addError(any(ObjectError.class));
     }
 
-    @Test
     public void processCheckout_calls_orderProcessor(){
         BindingResult bindingResult = mock(BindingResult.class);
         ShippingDetails shippingDetails = new ShippingDetails();
@@ -140,25 +130,6 @@ public class CartControllerTests {
         assertThat(cart.getTotalItems(), is(0));
         assertThat(path, is("cart/completed"));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

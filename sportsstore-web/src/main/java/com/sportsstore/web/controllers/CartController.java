@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -30,7 +29,7 @@ public class CartController {
     private final OrderProcesser orderProcesser;
 
     @Inject
-    public CartController(ProductRepository repository, Cart cart, OrderProcesser orderProcesser){
+    public CartController(final ProductRepository repository, final Cart cart, final OrderProcesser orderProcesser){
         this.repository = repository;
         this.cart = cart;
         this.orderProcesser = orderProcesser;
@@ -88,6 +87,8 @@ public class CartController {
         orderProcesser.processOrder(cart, shippingDetails);
 
         cart.clear();
+
+        model.addAttribute("giftWrap", shippingDetails.isGiftWrap());
 
         return "cart/completed";
     }

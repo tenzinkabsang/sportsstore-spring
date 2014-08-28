@@ -5,40 +5,43 @@ import com.sportsstore.models.Cart;
 import com.sportsstore.models.CartLine;
 import com.sportsstore.models.Product;
 import com.sportsstore.models.ProductListViewModel;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.Assert.assertThat;
-
-import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@Test
 public class ProductControllerTests {
     @Mock
     private ProductRepository repo;
     @InjectMocks
     private ProductController ctrl = new ProductController();
 
-    Model uiModel = new ExtendedModelMap();
+    Model uiModel;
 
-    @Test
+    @BeforeMethod(alwaysRun = true)
+    public void initMocks(){
+        MockitoAnnotations.initMocks(this);
+        uiModel = new ExtendedModelMap();
+    }
+
     public void list_Calls_Repository_To_Get_Products(){
         ctrl.list(uiModel, null, 1);
 
         verify(repo).getProducts(anyInt(), anyString(), anyInt());
     }
 
-    @Test
     public void generate_category_specific_product_count(){
         when(repo.getProductCountFor(anyString())).thenReturn(3);
 
@@ -49,7 +52,6 @@ public class ProductControllerTests {
         assertThat(viewModel.getPagingInfo().getTotalItems(), is(3));
     }
 
-    @Test
     public void can_add_new_lines(){
         Product p1 = new Product();
         p1.setProductId(1);
@@ -71,7 +73,6 @@ public class ProductControllerTests {
         assertThat(results.get(1).getProduct(), equalTo(p2));
     }
 
-    @Test
     public void can_add_quantity_for_existing_lines(){
         Product p1 = new Product();
         p1.setProductId(1);
@@ -93,7 +94,6 @@ public class ProductControllerTests {
         assertThat(results.get(1).getQuantity(), is(1));
     }
 
-    @Test
     public void can_remove_line(){
         Product p1 = new Product();
         p1.setProductId(1);
@@ -117,7 +117,6 @@ public class ProductControllerTests {
         assertThat(lines.get(0).getQuantity(), is(3));
     }
 
-    @Test
     public void calculate_cart_total(){
         Product p1 = new Product();
         p1.setProductId(1);
@@ -137,7 +136,6 @@ public class ProductControllerTests {
         assertThat(result, is(BigDecimal.valueOf(410)));
     }
 
-    @Test
     public void can_clear_cart_contents(){
         Product p1 = new Product();
         p1.setProductId(1);

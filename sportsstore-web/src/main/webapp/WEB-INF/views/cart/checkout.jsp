@@ -6,6 +6,7 @@
 <p>Please enter your details, and we'll ship your goods right away!</p>
 
 <form:form modelAttribute="shippingDetails" method="post" cssClass="form-horizontal" role="form">
+    <form:errors path="*" cssClass="error" />
     <div class="form-group">
         <form:label path="name" cssClass="col-sm-2 control-label">Name:</form:label>
         <div class="col-sm-5">
@@ -42,7 +43,7 @@
         <form:label path="zip" cssClass="col-sm-2 control-label">Zip:</form:label>
         <div class="col-sm-5">
             <form:input path="zip" cssClass="form-control"/>
-            <form:input path="zip" cssClass="error" />
+            <form:errors path="zip" cssClass="error" />
         </div>
     </div>
 
@@ -54,7 +55,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Complete order</button>
+            <input type="submit" class="btn btn-default" value="Complete order" />
         </div>
     </div>
 
