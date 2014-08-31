@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -45,4 +47,56 @@ public class AdminControllerTests {
         assertEquals(products.size(), 2);
         assertEquals(viewPath, "admin/index");
     }
+
+    public void edit_get_returns_the_product_for_the_given_id(){
+        Product p = new Product();
+        p.setProductId(2);
+        p.setName("Bicycle");
+        when(repo.getProductById(anyInt())).thenReturn(p);
+
+        String viewPath = ctrl.edit(2, uiModel);
+
+        Product result = (Product)uiModel.asMap().get("product");
+
+        assertEquals(result.getProductId(), 2);
+        assertEquals(result.getName(), "Bicycle");
+        assertEquals(viewPath, "admin/edit");
+    }
+
+    public void edit_post_binding_errors_redirects_back_to_the_page(){
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        String path = ctrl.edit(new Product(), bindingResult, null);
+        assertEquals(path, "admin/edit");
+    }
+
+    public void edit_post_valid_data_updates_product(){
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        String path = ctrl.edit(new Product(), bindingResult, new RedirectAttributesModelMap());
+
+        verify(repo).saveProduct(any(Product.class));
+        assertEquals(path, "redirect:index");
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

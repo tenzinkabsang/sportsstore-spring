@@ -2,6 +2,9 @@
 
 <decorators defaultdir="/WEB-INF/views/shared">
     <decorator name="layout" page="layout.jsp">
-        <pattern>*</pattern>
+        <pattern>/*</pattern>
+    </decorator>
+    <decorator name="admin_layout" page="admin_layout.jsp">
+        <pattern>/admin/*</pattern>
     </decorator>
 </decorators>

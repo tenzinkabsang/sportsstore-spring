@@ -1,7 +1,11 @@
 package com.sportsstore.models;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
+
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 
 import static org.springframework.format.annotation.NumberFormat.Style.CURRENCY;
 
@@ -10,12 +14,16 @@ import java.sql.Timestamp;
 
 public class Product {
     private int productId;
+
+    @NotEmpty
     private String name;
     private String description;
 
+    @Min(1)
     @NumberFormat(style = CURRENCY)
     private BigDecimal price;
 
+    @NotEmpty
     private String category;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
