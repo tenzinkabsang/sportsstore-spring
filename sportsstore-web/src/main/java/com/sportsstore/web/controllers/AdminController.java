@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -52,7 +53,7 @@ public class AdminController {
         return "admin/edit";
     }
 
-    @RequestMapping(value = "delete", method = POST)
+    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
     public String delete(@RequestParam int productId, RedirectAttributes redirectAttr){
         boolean success = repo.delete(productId);
         if(success)

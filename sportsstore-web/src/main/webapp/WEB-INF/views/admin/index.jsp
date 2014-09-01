@@ -25,6 +25,7 @@
 
             <td>
                 <html:form method="post" action="delete">
+                    <input type="hidden" name="_method" value="DELETE" />
                     <input type="hidden" name="productId" value="${item.productId}"/>
                     <input type="submit" value="Delete" class="btn btn-warning"/>
                 </html:form>
