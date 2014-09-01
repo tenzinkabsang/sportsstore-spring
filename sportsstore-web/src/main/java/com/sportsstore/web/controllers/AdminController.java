@@ -46,8 +46,19 @@ public class AdminController {
         return "redirect:index";
     }
 
+    @RequestMapping(value = "create", method = GET)
+    public String create(Model model) {
+        model.addAttribute(new Product());
+        return "admin/edit";
+    }
+
     @RequestMapping(value = "delete", method = POST)
-    public String delete(@RequestParam int productId){
+    public String delete(@RequestParam int productId, RedirectAttributes redirectAttr){
+        boolean success = repo.delete(productId);
+        if(success)
+            redirectAttr.addFlashAttribute("message", "Item deleted successfully");
+
         return "redirect:index";
     }
+
 }

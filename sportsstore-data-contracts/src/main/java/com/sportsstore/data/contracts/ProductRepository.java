@@ -16,5 +16,7 @@ public interface ProductRepository {
 
     List<Product> getAllProducts();
 
-    void saveProduct(Product product);
+    boolean saveProduct(Product product);
+
+    boolean delete(int productId);
 }

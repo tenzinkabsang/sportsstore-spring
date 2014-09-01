@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -79,6 +80,26 @@ public class AdminControllerTests {
 
         verify(repo).saveProduct(any(Product.class));
         assertEquals(path, "redirect:index");
+    }
+
+    public void create_uses_same_view_as_edit(){
+
+        String path = ctrl.create(uiModel);
+
+        assertEquals(path, "admin/edit");
+        assertTrue(uiModel.asMap().get("product") instanceof Product);
+    }
+
+    public void delete_should_redirect_to_index_when_done(){
+        when(repo.delete(anyInt())).thenReturn(true);
+
+        RedirectAttributes redirectAttr = new RedirectAttributesModelMap();
+        String path = ctrl.delete(1, redirectAttr);
+        String msg = (String)redirectAttr.getFlashAttributes().get("message");
+        verify(repo).delete(1);
+
+        assertEquals(path, "redirect:index");
+        assertTrue(msg.contains("deleted"));
     }
 }
 

@@ -23,7 +23,7 @@
 
         <button type="submit" class="btn btn-default">Save</button>
 
-        <a href="<s:url value="/index"/>">Cancel and return to List</a>
+        <a href="<s:url value="/admin/index"/>">Cancel and return to List</a>
     </form:form>
 
 </div>

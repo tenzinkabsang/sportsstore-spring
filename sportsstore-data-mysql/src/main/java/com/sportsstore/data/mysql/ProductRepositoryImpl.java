@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,8 @@ import java.util.List;
 @Repository("mysql")
 @Transactional(propagation = Propagation.SUPPORTS)
 public class ProductRepositoryImpl implements ProductRepository {
+
+    private final static int ONE_ROW = 1;
 
     @Inject
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -41,7 +44,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public int getProductCountFor(String category) {
-        if (category == null || category.isEmpty())
+        if (StringUtils.isBlank(category))
             return jdbcTemplate.queryForObject("select count(*) from products", new MapSqlParameterSource(), Integer.class);
 
         final String query = "select count(*) from products where category = :category";
@@ -61,39 +64,40 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> getAllProducts() {
-        return jdbcTemplate.query("select * from products", BeanPropertyRowMapper.newInstance(Product.class));
+        return jdbcTemplate.query("select * from products order by category", BeanPropertyRowMapper.newInstance(Product.class));
     }
 
     @Override
-    public void saveProduct(Product p) {
+    public boolean saveProduct(Product p) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("name", p.getName())
                 .addValue("description", p.getDescription())
                 .addValue("price", p.getPrice())
                 .addValue("category", p.getCategory());
 
-
-        if (p.getProductId() == 0) {
-            addProduct(p, params);
-        } else {
-            updateProduct(p, params);
-        }
+        return  p.getProductId() == 0 ? addProduct(p, params) : updateProduct(p, params);
     }
 
-    private void addProduct(Product p, SqlParameterSource params) {
+    @Override
+    public boolean delete(int productId) {
+        int rowAffected = jdbcTemplate.update("delete from products where productId = :productId", new MapSqlParameterSource("productId", productId));
+        return rowAffected == ONE_ROW;
+    }
+
+    private boolean addProduct(Product p, SqlParameterSource params) {
         final String sql = "insert into products (name, description, price, category) " +
                 "values (:name, :description, :price, :category)";
 
-        jdbcTemplate.update(sql, params);
+        return jdbcTemplate.update(sql, params) == ONE_ROW;
     }
 
-    private void updateProduct(Product p, MapSqlParameterSource params) {
+    private boolean updateProduct(Product p, MapSqlParameterSource params) {
         final String sql = "update products set name = :name, description = :description, price = :price, " +
                 "category = :category where productId = :productId";
 
         params.addValue("productId", p.getProductId());
 
-        jdbcTemplate.update(sql, params);
+        return jdbcTemplate.update(sql, params) == ONE_ROW;
     }
 
 }
