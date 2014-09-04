@@ -6,5 +6,6 @@
     </decorator>
     <decorator name="admin_layout" page="admin_layout.jsp">
         <pattern>/admin/*</pattern>
+        <pattern>/account/*</pattern>
     </decorator>
 </decorators>

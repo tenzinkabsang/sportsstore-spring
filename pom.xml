@@ -23,6 +23,7 @@
         <sportsstore-data-mysql.version>1.0.0-SNAPSHOT</sportsstore-data-mysql.version>
 
         <spring.version>4.0.6.RELEASE</spring.version>
+        <spring-security.version>3.2.5.RELEASE</spring-security.version>
         <junit.version>4.8.2</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>

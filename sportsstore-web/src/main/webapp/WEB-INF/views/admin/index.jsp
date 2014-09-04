@@ -2,8 +2,20 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="html" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<title>Index</title>
+<title>
+    Manage Products
+</title>
+
+<p>
+    <em class="text-muted">
+        <sec:authorize var="loggedIn" access="isAuthenticated()">
+            Welcome <sec:authentication property="principal.username" /> -
+            <a href="<s:url value="/static/j_spring_security_logout"/>">Logout</a>
+        </sec:authorize>
+    </em>
+</p>
 
 
 <table class="table table-bordered table-condensed">
@@ -20,7 +32,7 @@
             </td>
             <td>${item.category}</td>
             <td>
-                <fmt:formatNumber value="${item.price}" type="Currency" />
+                <fmt:formatNumber value="${item.price}" type="Currency"/>
             </td>
 
             <td>
